@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAESER · Portail Formation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@800;900&family=Inter:wght@700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="toast-host"></div>
+
+<div class="container">
+  <!-- BANDEAU D'EN-TÊTE AVEC LOGO KAESER OFFICIEL -->
+  <div class="nameplate">
+    <div class="brand-mark" style="width: 180px; height: 56px; background: transparent; box-shadow: none; padding: 0;">
+      <svg viewBox="0 0 340 100" width="100%" height="100%">
+        <rect x="0" y="0" width="310" height="100" fill="#03101e"/>
+        <rect x="312" y="0" width="28" height="100" fill="#ffffff"/>
+        <circle cx="326" cy="85" r="8" fill="none" stroke="#000000" stroke-width="2"/>
+        <text x="326" y="89" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#000000" text-anchor="middle">R</text>
+        <text x="10" y="58" font-family="'Barlow Semi Condensed', Arial Black, sans-serif" font-weight="900" font-size="62" fill="#ffffff" letter-spacing="-1">KAESER</text>
+        <text x="12" y="90" font-family="'Inter', Arial, sans-serif" font-weight="800" font-size="28" fill="#ffffff" letter-spacing="0.5">COMPRESSEURS</text>
+      </svg>
+    </div>
+    <div class="nameplate-text">
+      <div class="eyebrow">Service Formation</div>
+      <h1>Portail Formation</h1>
+    </div>
+  </div>
+
+  <!-- ACCUEIL / IDENTIFICATION -->
+  <div id="user-info" class="card">
+    <h2>Bienvenue</h2>
+    <p class="sub">Renseignez vos informations pour accéder à votre parcours de formation.</p>
+    <label class="field-label">Nom</label>
+    <input type="text" id="nom" placeholder="Votre nom" required>
+    <label class="field-label">Prénom</label>
+    <input type="text" id="prenom" placeholder="Votre prénom" required>
+    <label class="field-label">Société</label>
+    <input type="text" id="societe" placeholder="Nom de votre entreprise" required>
+    <label class="field-label">Années d'expérience</label>
+    <input type="number" id="experience" placeholder="0" min="0" required>
+    <button onclick="validerInfos()" class="btn btn-primary">Accéder aux formations</button>
+  </div>
+
+  <!-- SELECTION FORMATION -->
+  <div id="selection-module" class="card" style="display:none;">
+    <h2>Votre formation</h2>
+    <div id="formation-active-badge" class="section-header" style="display:none; margin-bottom:12px;"></div>
+    <p class="sub">Choisissez votre module puis suivez les 3 étapes du parcours.</p>
+    <label class="field-label">Formation</label>
+    <select id="liste-formations" class="select-style" onchange="changerFormation()">
+      <option value="">— Choisir une formation —</option>
+      <option value="AIR COMPRIMÉ NOVICES">AIR COMPRIMÉ NOVICES</option>
+      <option value="BASIC TRAINING">BASIC TRAINING</option>
+      <option value="BOOSTER, OMEGA & VIS BP">BOOSTER, OMEGA & VIS BP</option>
+      <option value="INDUSTRIE 1">INDUSTRIE 1</option>
+      <option value="INDUSTRIE 2">INDUSTRIE 2</option>
+      <option value="INDUSTRIE 3">INDUSTRIE 3</option>
+      <option value="MISE EN SERVICE STATION">MISE EN SERVICE STATION</option>
+      <option value="SAM - Fonctions avancées">SAM - Fonctions avancées</option>
+      <option value="SAM - Formule complète">SAM - Formule complète</option>
+      <option value="TP MOBILAIR">TP MOBILAIR</option>
+      <option value="TP MOBILAIR ELECTRIQUE">TP MOBILAIR ELECTRIQUE</option>
+      <option value="TRAITEMENT DE L'AIR">TRAITEMENT DE L'AIR</option>
+      <option value="VARIATEUR EXPERT">VARIATEUR EXPERT</option>
+      <option value="VIS SECHE">VIS SECHE</option>
+    </select>
+
+    <div id="boutons-etapes" style="margin-top:18px;">
+      <button id="btn-preform" onclick="verifierEtDemarrer('pre-formation')" class="btn btn-module">
+        <span class="step-no">1</span> Pré-formation
+      </button>
+      <div id="locked-modules" style="display:none;">
+        <div class="module-done">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#1f9d55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Pré-formation terminée
+        </div>
+        <button id="btn-quiz-post" onclick="verifierEtDemarrer('quiz-final')" class="btn btn-module">
+          <span class="step-no">2</span> Quiz de formation (Post)
+        </button>
+        <div id="post-quiz-only" style="display:none;">
+          <div class="module-done">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#1f9d55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Quiz de formation terminé
+          </div>
+          <button onclick="verifierEtDemarrer('evaluation')" class="btn btn-module btn-eval">
+            <span class="step-no">3</span> Évaluation du formateur
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFOS SESSION EVALUATION -->
+  <div id="eval-info-area" class="card" style="display:none;">
+    <h2>Détails de la session</h2>
+    <p class="sub">Ces informations accompagnent votre évaluation du formateur.</p>
+    <label class="field-label">Nom du formateur</label>
+    <input type="text" id="nom-formateur" placeholder="Nom du formateur">
+    <label class="field-label">Date de formation</label>
+    <input type="date" id="date-formation">
+    <label class="field-label">Lieu de formation</label>
+    <input type="text" id="lieu-formation" placeholder="Lieu de formation">
+    <button onclick="demarrerQuestionsEval()" class="btn btn-primary">Commencer l'évaluation</button>
+  </div>
+
+  <!-- INTRO PRE-FORMATION -->
+  <div id="intro-area" class="card" style="display:none;">
+    <div id="intro-content" style="text-align:left; font-size:14.5px; line-height:1.6; color:var(--ink-900);"></div>
+    <button onclick="lancerQuestionsApresIntro()" class="btn btn-primary" style="margin-top:20px;">Commencer le questionnaire</button>
+  </div>
+
+  <!-- ZONE DE QUIZ -->
+  <div id="quiz-area" class="card" style="display:none;">
+    <div class="gauge-wrap">
+      <div class="gauge">
+        <svg viewBox="0 0 76 76">
+          <circle class="gauge-track" cx="38" cy="38" r="32"></circle>
+          <circle id="gauge-fill" class="gauge-fill" cx="38" cy="38" r="32" stroke-dasharray="201" stroke-dashoffset="201"></circle>
+        </svg>
+        <div class="gauge-center" id="gauge-pct">0%</div>
+      </div>
+      <div class="gauge-label">
+        <span class="module-name" id="gauge-module-name">Module</span>
+        <span class="step-count" id="gauge-step-count">Question 1</span>
+      </div>
+    </div>
+    <div id="question-text"></div>
+    <div id="options-container"></div>
+    
+    <!-- Navigation (Précédent / Suivant) -->
+    <div style="margin-top:20px; display:flex; gap:10px;">
+      <button id="btn-question-precedente" onclick="precedent()" class="btn btn-secondary" style="display:none; flex:1; margin-top:0;">← Précédent</button>
+    </div>
+  </div>
+
+  <!-- RESULTATS -->
+  <div id="result-area" class="card" style="display:none;"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
